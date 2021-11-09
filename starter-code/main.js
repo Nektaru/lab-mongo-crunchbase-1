@@ -54,6 +54,110 @@ mongoClient.connect(`mongodb://localhost:27017/crunchbase`, (error, db) => {
             break;
 
           // Code here next cases!
+
+          case "4":
+            // 4.List by name all companies founded in february of 2004.
+            db.collection('companies').find({$and: [{founded_year: 2004}, {founded_month: 2}]}, { name: 1, _id: 0 }).toArray((error, result) => {
+              if (error) {
+                console.log(error);
+                rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+              } else {
+                console.log(result);
+                rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+              }
+            })
+            break;
+
+          case "5":
+              // 5.List by name all companies founded in the summer of 2004 (april to june) sorted by date.
+              db.collection('companies').find({$and: [{founded_year: 2004},{founded_month: {$gt: 4, $lt: 6}}]}, { name: 1, _id: 0 }).count((error, result) => {
+                if (error) {
+                  console.log(error);
+                  rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                  console.log(result);
+                  rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+              })
+              break;
+
+          case "6":
+              // 6.What companies have offices in "Barcelona.
+              db.collection('companies').find({"offices.city":"Barcelona"}, { name: 1, _id: 0 }).toArray((error, result) => {
+                if (error) {
+                  console.log(error);
+                  rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                  console.log(result);
+                  rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+              })
+              break;
+
+        case "7":
+              // 7.List the 10 companies with more employees sorted ascending (show name and employees).
+              db.collection('companies').find({"number_of_employees": 1}, {number_of_employees: -1}, { name: 1, _id: 0, number_of_employees: 1}).limit(10).count((error, result) => {
+                if (error) {
+                  console.log(error);
+                  rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                  console.log(result);
+                  rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+              })
+              break;
+
+        case "8":
+              // 8.Find the company with the name "Facebook"
+              db.collection('companies').find({"name":"Facebook"}, { name: 1, _id: 0}).toArray((error, result) => {
+                if (error) {
+                  console.log(error);
+                  rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                  console.log(result);
+                  rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+              })
+              break;
+
+        case "9":
+           //9.- How many employees has Facebook?
+           db.collection('companies').find({name:"Facebook"}).project({number_of_employees:1, _id: 0}).toArray((error, result) => {
+            if (error) {
+              console.log(error);
+              rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+            } else {
+              console.log(result);
+              rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+            }
+          })
+          break;
+        case "10":
+           //10.- List the name of all the products of Facebook           Esto del findOne no sé como sale bien, me ha ayudado Guido.
+           db.collection('companies').findOne({name:'Facebook'}, {'products.name':1, _id: 0},(error, result) => {
+            if (error) {
+              console.log(error);
+              rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+            } else {
+              console.log(result);        
+              rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+            }
+          })
+          break;
+
+
+        case "11":
+           //11. List the people that are working at Facebook right now (check relationships field)
+           db.collection('companies').findOne({name:'Facebook'}, {'products.name':1, _id: 0},(error, result) => {
+            if (error) {
+              console.log(error);
+              rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+            } else {
+              console.log(result);
+              rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+            }
+          })
+          break;
         }
       });
     }
